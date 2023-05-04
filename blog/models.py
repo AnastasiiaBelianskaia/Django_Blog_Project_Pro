@@ -3,8 +3,6 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
-from django_lifecycle import AFTER_UPDATE, LifecycleModel, hook
-
 
 User = get_user_model()
 
@@ -30,13 +28,8 @@ class Post(models.Model):
     def __str__(self):
         return self.heading
 
-    @hook(AFTER_UPDATE, when="is_published", has_changed=True)
-    def on_publish(self):
-        self.pub_date = timezone.datetime.now()
-        self.save()
 
-
-class Comment(LifecycleModel):
+class Comment(models.Model):
     author = models.CharField(max_length=100, verbose_name='username')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField(max_length=400)
