@@ -5,8 +5,6 @@ from django.utils import timezone
 
 from django_lifecycle import AFTER_UPDATE, LifecycleModel, hook
 
-from .tasks import notification_for_author
-
 
 User = get_user_model()
 
@@ -47,7 +45,3 @@ class Comment(LifecycleModel):
 
     def __str__(self):
         return self.text
-
-    @hook(AFTER_UPDATE, when="is_published", has_changed=True)
-    def on_publish(self):
-        notification_for_author.delay(post_pk=self.post.id)

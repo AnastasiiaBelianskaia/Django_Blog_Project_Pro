@@ -21,12 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'qwertyuiopasdfghjklzxcvbnm')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',
+                 '127.0.0.1', ]
 
 INTERNAL_IPS = [
     'localhost',
@@ -122,9 +123,9 @@ USE_I18N = True
 USE_TZ = True
 
 # Celery config
-CELERY_TIMEZONE = TIME_ZONE
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
+# CELERY_TIMEZONE = TIME_ZONE
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # Emails
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -158,3 +159,8 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+# prod
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
