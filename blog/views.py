@@ -6,18 +6,14 @@ from django.db.models import Prefetch
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views import View, generic
-from django.views.decorators.cache import cache_page
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin
 
 from .forms import CommentForm, FeedbackForm, PostForm, RegisterForm
 from .models import Comment, Post, User
-from .tasks import notification_for_admin, send_feedback_to_admin
 
 
-@cache_page(15)
 def index(request):
     users = User.objects.filter(is_staff=False, is_superuser=False).aggregate(Count('id'))
     posts = Post.objects.aggregate(Count('id'))
@@ -83,7 +79,6 @@ class PostCreate(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
             new_post = post_form.save()
             new_post.save()
             messages.success(self.request, 'Your post has been successfully created!!!')
-            notification_for_admin.delay(notif='post')
             return redirect('blog:posts_list')
         return super().post(request, *args, **kwargs)
 
@@ -130,7 +125,6 @@ class PostDetails(generic.DetailView):
         return context
 
 
-@method_decorator(cache_page(15), name='dispatch')
 class PostList(generic.ListView):
     model = Post
     template_name = 'blog/posts_list.html'
@@ -140,7 +134,6 @@ class PostList(generic.ListView):
         return Post.objects.select_related('author').filter(is_published=True).order_by('-pub_date')
 
 
-@method_decorator(cache_page(15), name='dispatch')
 class MyPostsListView(LoginRequiredMixin, generic.ListView):
     model = Post
     template_name = 'blog/my_posts_list.html'
@@ -163,7 +156,6 @@ class CommentFormView(SuccessMessageMixin, SingleObjectMixin, FormView):
             new_comment = Comment(text=text, author=author, post_id=kwargs['pk'])
             new_comment.save()
             messages.success(self.request, "Your comment will be added soon!")
-            notification_for_admin.delay(notif='comment')
             return redirect('blog:post_details', pk=kwargs['pk'])
         return super().post(request, *args, **kwargs)
 
@@ -194,11 +186,10 @@ class FeedbackView(SuccessMessageMixin, FormView):
     success_url = reverse_lazy('blog:index')
     success_message = 'Thanks for your feedback!!!'
 
-    def form_valid(self, feedback_form):
-        author = feedback_form.cleaned_data['author']
-        title = feedback_form.cleaned_data['title']
-        text = feedback_form.cleaned_data['text']
-        score = feedback_form.cleaned_data['evaluate_the_blog']
-        reply = feedback_form.cleaned_data['reply_me']
-        send_feedback_to_admin.delay(author, title, text, score, reply)
-        return super().form_valid(feedback_form)
+    # def form_valid(self, feedback_form):
+    #     author = feedback_form.cleaned_data['author']
+    #     title = feedback_form.cleaned_data['title']
+    #     text = feedback_form.cleaned_data['text']
+    #     score = feedback_form.cleaned_data['evaluate_the_blog']
+    #     reply = feedback_form.cleaned_data['reply_me']
+    #     return super().form_valid(feedback_form)
