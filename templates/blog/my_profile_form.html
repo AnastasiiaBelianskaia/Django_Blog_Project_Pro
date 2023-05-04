@@ -1,0 +1,31 @@
+{% extends "blog/base_generic.html" %}
+
+{% block content %}
+    {% if messages %}
+            {% for m in messages %}
+            <div class="alert {{ m.tags }} alert-dismissible shadow fade show" role="alert">
+             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">Close</span>
+             </button>
+                {{ m }}
+            </div>
+            {% endfor %}
+    {% endif %}
+
+    <div class="wrapper_for_registration_page">
+        <form action="" method="post">
+            {% csrf_token %}
+            <p class="margin_bottom_24"><strong>Change your profile info</strong></p>
+            {% for fm in form %}
+                <table class="register_form">
+                    {{ fm.label }}
+                    {{ fm }}
+                </table>
+            {% endfor %}
+        <input type="submit" value="Change"  class="margin_bottom_24"/>
+        </form>
+
+    <a href="{% url 'password_change' %}" class="link_lost_password margin_bottom_24">Change password</a>
+
+    </div>
+{% endblock %}

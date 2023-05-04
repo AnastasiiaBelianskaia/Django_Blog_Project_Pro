@@ -1,0 +1,12 @@
+{% extends 'blog/base_generic.html' %}
+
+{% block content %}
+<div class="wrapper_for_registration_page">
+  <div class="update_link">
+    <p>Name: {{ user.first_name }}</p>
+    <p class="margin_bottom_24">Username: {{ user.username }}</p>
+    <p class="margin_bottom_24">Last online: {{ user.last_login }}</p>
+    <p>This author has {{ num_posts.id__count }} posts</p>
+  </div>
+</div>
+{% endblock %}

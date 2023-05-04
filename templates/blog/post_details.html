@@ -1,0 +1,50 @@
+{% extends 'blog/base_generic.html' %}
+
+{% block content %}
+{% if messages %}
+            {% for m in messages %}
+            <div class="alert {{ m.tags }} alert-dismissible shadow fade show" role="alert">
+             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">Close</span>
+             </button>
+                {{ m }}
+            </div>
+            {% endfor %}
+{% endif %}
+
+<div class="wrapper_for_post_details_page">
+        <h2 class="margin_bottom_24">{{ post.heading }}</h2>
+        <a class="links_on_details_page" href="{% url 'blog:author_info' pk=post.author.id %}">{{ post.author }}</a>
+        <img class="img_for_details" src="{{ post.image.url }}">
+        <div class="post_text">
+            {{ post.text }}
+        </div>
+
+        <span><strong>Leave a comment:</strong></span>
+        <form class="comment_input" action="" method="post">
+        {% csrf_token %}
+            {% for fm in form %}
+                <table>
+                    {{ fm.label }}
+                    {{ fm }}
+                </table>
+            {% endfor %}
+            <input type="submit" value="Submit" />
+        </form>
+
+
+    <div class="comments_section">
+        <span><strong>Last comments:</strong></span><br>
+        {% for comment in post.comments.all|slice:":10" %}
+        <span><strong>{{ comment.author }}</strong></span><br>
+        <p class="margin_bottom_24">{{ comment.text }}</p><br>
+            {% if not forloop.last %} {% endif %}
+            {% empty %}
+                <p>No comments yet</p>
+        {% endfor %}
+    </div>
+
+    <a class="links_on_details_page" href="{% url 'blog:comments_list' pk=post.id %}">Read all comments</a>
+</div>
+
+{% endblock %}

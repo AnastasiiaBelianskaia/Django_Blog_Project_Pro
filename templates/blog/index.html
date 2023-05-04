@@ -1,0 +1,38 @@
+{% extends "blog/base_generic.html" %}
+
+{% block content %}
+
+<div class="wrapper">
+<div class="left_column_main_page">
+    {% if messages %}
+            {% for m in messages %}
+            <div class="alert {{ m.tags }} alert-dismissible shadow fade show" role="alert">
+             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">Close</span>
+             </button>
+                {{ m }}
+            </div>
+            {% endfor %}
+    {% endif %}
+
+    <h1 class="margin_bottom_24"><strong>MyBlog</strong></h1>
+
+    <div class="about_us">
+        <h2><strong>About Us</strong></h2>
+        <p>Users on site: {{ users.id__count }}</p>
+        <p>Number of posts: {{ posts.id__count }}</p>
+        <p>Number of comments: {{ comments.id__count }}</p>
+    </div>
+</div>
+
+<div class="top_posts_column">
+    <h2 class="margin_bottom_24"><strong>Top 5 posts</strong></h2>
+    {% for single_post in most_commented_posts %}
+        <a href="{% url 'blog:post_details' pk=single_post.post %}" class="single_top_post">
+            <p class="top_post_title">{{ single_post.post__heading }}</p>
+            <span>Number of comments: {{ single_post.comments }} </span>
+        </a>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

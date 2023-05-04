@@ -1,0 +1,23 @@
+{% extends "blog/base_generic.html" %}
+
+{% block content %}
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {{ form.errors }}
+        </div>
+    {% endif %}
+<div class="wrapper_for_registration_page">
+    <form action="" method="post">
+        {% csrf_token %}
+        <p class="margin_bottom_24"><strong>Register</strong></p>
+        {% for fm in form %}
+            <table class="register_form">
+                    {{fm.label}}
+                    {{fm}}
+            </table>
+        {% endfor %}
+        <input type="submit" name="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}
