@@ -3,8 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog</title>
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 </head>
 <body>
-
+<div class="wrapper">
+    <header class="header navbar navbar-dark bg-dark">
+    <nav>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" href="{% url 'blog:registration_form' %}">Registration</a></li>
+            <li class="nav-item active margin_bottom_24"><a class="nav-link" href="{% url 'login' %}">LogIn</a></li>
+            <li class="nav-item active"><a class="nav-link" href="{% url 'blog:index' %}">Main</a></li>
+            <li class="nav-item active margin_bottom_24"><a class="nav-link" href="{% url 'blog:posts_list' %}">All Posts</a></li>
+            <li class="nav-item active"><a class="nav-link" href="{% url 'blog:send_feedback'%}">Send Feedback</a></li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item active"><a class="nav-link" href="{% url 'blog:my_posts' pk=request.user.id %}">My Posts</a></li>
+                <li class="nav-item active margin_bottom_24"><a class="nav-link" href="{% url 'blog:post_create_form' pk=request.user.id %}">Create Post</a></li>
+                <li class="nav-item active"><a class="nav-link" href="{% url 'blog:profile_update' pk=request.user.id %}">Change my profile</a></li>
+                <li class="nav-item active"><a class="nav-link" href="{% url 'logout' %}">LogOut</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+  </header>
+    <main class="main">
+    {% block content %}
+    {% endblock %}
+    </main>
+</div>
 </body>
 </html>

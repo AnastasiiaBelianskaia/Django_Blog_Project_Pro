@@ -1,0 +1,17 @@
+{% extends "blog/base_generic.html" %}
+
+{% block content %}
+    <div class="wrapper_for_registration_page">
+    <form class="form" action="" method="post">
+    {% csrf_token %}
+        {% for fm in form %}
+        <table class="register_form">
+            {{ fm.label }}
+            {{ fm }}
+            {{ fm.help_text }}
+        </table>
+        {% endfor %}
+        <input type="submit" value="Send" class="margin_bottom_24"/>
+   </form>
+    </div>
+{% endblock %}

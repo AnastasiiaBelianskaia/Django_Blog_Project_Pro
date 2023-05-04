@@ -1,0 +1,17 @@
+{% extends "blog/base_generic.html" %}
+
+{% block content %}
+    <div class="wrapper_for_registration_page">
+    <form class='form' enctype="multipart/form-data" action="" method="post">
+    {% csrf_token %}
+        <p class="margin_bottom_24"><strong>Post Update</strong></p>
+        {% for fm in form %}
+        <table class="register_form">
+            {{ fm.label }}
+            {{ fm }}
+        </table>
+        {% endfor %}
+        <input type="submit" value="Create" class="margin_bottom_24"/>
+   </form>
+    </div>
+{% endblock %}
