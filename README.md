@@ -14,9 +14,9 @@ _Pages:_
 * Public user's profile
 
 # Some pages:
-*Main page ( contains 'about us' and 'top posts')
+* Main page ( contains 'about us' and 'top posts')
 ![alt text](/main.png)
-*My posts page ( you can see if post's already published or drafted)
+* My posts page ( you can see if post's already published or drafted)
 ![alt text](/my_posts.png)
 * Post details page allows you to leave comment (will be moderated by admin) and read last comments(also, you can go to 'all comments' page)
 ![alt text](/post_details.png)
