@@ -189,21 +189,6 @@ class PostView(View):
         return view(request, *args, **kwargs)
 
 
-# class FeedbackView(SuccessMessageMixin, FormView):
-#     form_class = FeedbackForm
-#     template_name = 'blog/send_feedback.html'
-#     success_url = reverse_lazy('blog:index')
-#     success_message = 'Thanks for your feedback!!!'
-#
-#     def form_valid(self, feedback_form):
-#         author = feedback_form.cleaned_data['author']
-#         title = feedback_form.cleaned_data['title']
-#         text = feedback_form.cleaned_data['text']
-#         score = feedback_form.cleaned_data['evaluate_the_blog']
-#         reply = feedback_form.cleaned_data['reply_me']
-#         send_feedback_to_admin.delay(author, title, text, score, reply)
-#         return super().form_valid(feedback_form)
-
 def feedback(request):
     data = {}
     if request.method == 'POST':
