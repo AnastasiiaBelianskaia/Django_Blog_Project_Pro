@@ -288,3 +288,24 @@ input,textarea {
     margin-left: 16px;
     text-decoration: none;
 }
+
+.feedback_button {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,.55);
+}
+
+.feedback_send {
+    text-align: center;
+    background: darkseagreen;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.modal-content > .wrapper_for_registration_page {
+    width: 100%;
+}
+
+.modal-content {
+    background: transparent;
+}

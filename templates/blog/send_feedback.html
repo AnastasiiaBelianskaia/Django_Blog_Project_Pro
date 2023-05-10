@@ -1,8 +1,6 @@
-{% extends "blog/base_generic.html" %}
-
 {% block content %}
     <div class="wrapper_for_registration_page">
-    <form class="form" action="" method="post">
+    <form class="form js-feedback-form" action="{% url 'blog:send_feedback' %}" method="post">
     {% csrf_token %}
         {% for fm in form %}
         <table class="register_form">

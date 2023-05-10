@@ -14,5 +14,5 @@ urlpatterns = [
     path('profile/<int:pk>/my_posts/', views.MyPostsListView.as_view(), name='my_posts'),
     path('profile/<int:pk>/post_update/', views.MyPostUpdate.as_view(), name='post_update'),
     path('post/<int:pk>/all_comments/', views.CommentsList.as_view(), name='comments_list'),
-    path('feedback/', views.FeedbackView.as_view(), name='send_feedback'),
+    path('feedback/', views.feedback, name='send_feedback'),
 ]

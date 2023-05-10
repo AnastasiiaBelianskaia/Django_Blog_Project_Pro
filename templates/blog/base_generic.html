@@ -18,7 +18,16 @@
             <li class="nav-item active margin_bottom_24"><a class="nav-link" href="{% url 'login' %}">LogIn</a></li>
             <li class="nav-item active"><a class="nav-link" href="{% url 'blog:index' %}">Main</a></li>
             <li class="nav-item active margin_bottom_24"><a class="nav-link" href="{% url 'blog:posts_list' %}">All Posts</a></li>
-            <li class="nav-item active"><a class="nav-link" href="{% url 'blog:send_feedback'%}">Send Feedback</a></li>
+            <li class="nav-item active">
+                <button type="button" class="feedback_button js-feedback" data-url="{% url 'blog:send_feedback' %}">Send Feedback</button>
+            </li>
+            <div id="modal-feedback" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        {% include 'blog/send_feedback.html' %}
+                    </div>
+                </div>
+            </div>
             {% if request.user.is_authenticated %}
                 <li class="nav-item active"><a class="nav-link" href="{% url 'blog:my_posts' pk=request.user.id %}">My Posts</a></li>
                 <li class="nav-item active margin_bottom_24"><a class="nav-link" href="{% url 'blog:post_create_form' pk=request.user.id %}">Create Post</a></li>
@@ -33,5 +42,7 @@
     {% endblock %}
     </main>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous" defer></script>
+<script src="{% static 'js/feedback.js' %}" defer></script>
 </body>
 </html>

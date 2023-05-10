@@ -3,8 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
 from django.db.models import Prefetch
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View, generic
@@ -188,17 +189,36 @@ class PostView(View):
         return view(request, *args, **kwargs)
 
 
-class FeedbackView(SuccessMessageMixin, FormView):
-    form_class = FeedbackForm
-    template_name = 'blog/send_feedback.html'
-    success_url = reverse_lazy('blog:index')
-    success_message = 'Thanks for your feedback!!!'
+# class FeedbackView(SuccessMessageMixin, FormView):
+#     form_class = FeedbackForm
+#     template_name = 'blog/send_feedback.html'
+#     success_url = reverse_lazy('blog:index')
+#     success_message = 'Thanks for your feedback!!!'
+#
+#     def form_valid(self, feedback_form):
+#         author = feedback_form.cleaned_data['author']
+#         title = feedback_form.cleaned_data['title']
+#         text = feedback_form.cleaned_data['text']
+#         score = feedback_form.cleaned_data['evaluate_the_blog']
+#         reply = feedback_form.cleaned_data['reply_me']
+#         send_feedback_to_admin.delay(author, title, text, score, reply)
+#         return super().form_valid(feedback_form)
 
-    def form_valid(self, feedback_form):
-        author = feedback_form.cleaned_data['author']
-        title = feedback_form.cleaned_data['title']
-        text = feedback_form.cleaned_data['text']
-        score = feedback_form.cleaned_data['evaluate_the_blog']
-        reply = feedback_form.cleaned_data['reply_me']
-        send_feedback_to_admin.delay(author, title, text, score, reply)
-        return super().form_valid(feedback_form)
+def feedback(request):
+    data = {}
+    if request.method == 'POST':
+        feedback_form = FeedbackForm(request.POST)
+        if feedback_form.is_valid():
+            data['form_is_valid'] = True
+            author = feedback_form.cleaned_data['author']
+            title = feedback_form.cleaned_data['title']
+            text = feedback_form.cleaned_data['text']
+            reply = feedback_form.cleaned_data['reply_me']
+            score = feedback_form.cleaned_data['evaluate_the_blog']
+            send_feedback_to_admin.delay(author, title, text, score, reply)
+        else:
+            data['form_is_valid'] = False
+    else:
+        feedback_form = FeedbackForm()
+    data['html_form'] = render_to_string('blog/send_feedback.html', {'form': feedback_form}, request=request)
+    return JsonResponse(data)
